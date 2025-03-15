@@ -41,7 +41,7 @@ const validator = ev(value)
   .min(3)
   .max(5, { code: "invalid_length", message: "Текст слишком большой!" });
 
-if (validator.safeValidate()) console.log();
+if (validator.liteValidate()) console.log();
 ```
 
 ---
@@ -66,8 +66,8 @@ if (validator.safeValidate()) console.log();
 
 Методы возвращения ошибок
 
-- **validate()** - Строгая проверка возвращает ошибку без дальнейшей проверки.
 - **.liteValidate()** — Обычная проверка возвращает массив ошибок (EasyError[]).
+- **.validate()** - Строгая проверка возвращает ошибку без дальнейшей проверки.
 
 ---
 

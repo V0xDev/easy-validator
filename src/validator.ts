@@ -1,3 +1,4 @@
+import { ValidationEasyError } from "./error";
 import { checkLength, checkType } from "./rules";
 import type {
   ChainValidator,
@@ -29,11 +30,19 @@ function easyValidator(value: any) {
         return this;
       },
       liteValidate,
+      validate,
     };
   }
 
   function liteValidate() {
     return errors;
+  }
+
+  function validate() {
+    if (errors.length > 0) {
+      throw new ValidationEasyError(errors[0]);
+    }
+    return null;
   }
 
   const validateFunc = {
@@ -44,6 +53,7 @@ function easyValidator(value: any) {
     symbol: () => checkType(value, "symbol"),
     object: () => checkType(value, "object"),
     liteValidate,
+    validate,
   };
 
   return validateFunc;

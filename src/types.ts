@@ -1,4 +1,4 @@
-import { ev } from "./validator";
+import { ValidationEasyError } from "./error";
 
 export type EasyErrorCode = "invalid_type" | "invalid_length";
 export type EasyType =
@@ -21,8 +21,12 @@ export interface EasyError {
 export type EasyNewMessageParams = EasyError | string;
 export type EasyMessageLengthComparison = "less" | "greater";
 
+export type EasyLiteValidation = EasyError[];
+export type EasyValidation = null | ValidationEasyError;
+
 export interface ChainValidator {
   min(length?: number, params?: EasyNewMessageParams): ChainValidator;
   max(length?: number, params?: EasyNewMessageParams): ChainValidator;
-  liteValidate(): EasyError[];
+  liteValidate(): EasyLiteValidation;
+  validate(): EasyValidation;
 }
