@@ -5,7 +5,6 @@ import type {
   EasyError,
   EasyNewMessageParams,
   EasyType,
-  EasyValidation,
 } from "./types";
 
 function easyValidator(value: any) {
@@ -39,6 +38,14 @@ function easyValidator(value: any) {
     };
   }
 
+  function createLimitedChain(
+    type: EasyType
+  ): Omit<ChainValidator, "min" | "max"> {
+    const chain = addBaseChain(type);
+    const { min, max, ...rest } = chain;
+    return rest;
+  }
+
   function liteValidate() {
     return errors;
   }
@@ -54,9 +61,9 @@ function easyValidator(value: any) {
     string: () => addBaseChain("string"),
     number: () => addBaseChain("number"),
     bigint: () => addBaseChain("number"),
-    boolean: () => addBaseChain("boolean"),
-    symbol: () => addBaseChain("symbol"),
-    object: () => addBaseChain("object"),
+    boolean: () => createLimitedChain("boolean"),
+    symbol: () => createLimitedChain("symbol"),
+    object: () => createLimitedChain("object"),
   };
 
   return validateFunc;
