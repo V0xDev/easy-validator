@@ -1,6 +1,6 @@
 import { ValidationEasyError } from "./error";
 
-export type EasyErrorCode = "invalid_type" | "invalid_length";
+export type EasyErrorCode = "invalid_type" | "invalid_length" | "custom_error";
 export type EasyType =
   | "string"
   | "number"
@@ -27,6 +27,7 @@ export type EasyValidation = null | ValidationEasyError;
 export interface ChainValidator {
   min(length?: number, params?: EasyNewMessageParams): ChainValidator;
   max(length?: number, params?: EasyNewMessageParams): ChainValidator;
+  rule(rule: () => EasyError | null): ChainValidator;
   liteValidate(): EasyLiteValidation;
   validate(): EasyValidation;
 }

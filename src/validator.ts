@@ -5,6 +5,7 @@ import type {
   EasyError,
   EasyNewMessageParams,
   EasyType,
+  EasyValidation,
 } from "./types";
 
 function easyValidator(value: any) {
@@ -29,6 +30,10 @@ function easyValidator(value: any) {
         addError(() => checkLength("greater", value, length, params));
         return this;
       },
+      rule(rule: () => EasyError | null) {
+        addError(rule);
+        return this;
+      },
       liteValidate,
       validate,
     };
@@ -49,11 +54,9 @@ function easyValidator(value: any) {
     string: () => addBaseChain("string"),
     number: () => addBaseChain("number"),
     bigint: () => addBaseChain("number"),
-    boolean: () => checkType(value, "boolean"),
-    symbol: () => checkType(value, "symbol"),
-    object: () => checkType(value, "object"),
-    liteValidate,
-    validate,
+    boolean: () => addBaseChain("boolean"),
+    symbol: () => addBaseChain("symbol"),
+    object: () => addBaseChain("object"),
   };
 
   return validateFunc;
